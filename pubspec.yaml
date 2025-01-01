@@ -1,0 +1,50 @@
+name: test2
+description: "A new Flutter project."
+
+version: 1.0.0+1
+
+
+environment:
+  sdk: ^3.5.1
+
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+  # GetX
+  get: ^4.6.6
+
+  # Networking
+  http: ^0.13.3
+  http_interceptor: ^1.0.2
+  logger: ^1.1.0
+  dartz: ^0.10.1
+
+  # Images
+  image_picker: ^1.0.8
+  video_player: ^2.8.5
+
+  #
+  flutter_tts: ^3.6.3
+  
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^4.0.0
+
+flutter:
+
+  uses-material-design: true
+
+
+  assets:
+   - assets/images/
+   - assets/videos/
+  # fonts:
+  #   - family: Schyler
+  #     fonts:
+  #       - asset: fonts/Schyler-Regular.ttf
+
