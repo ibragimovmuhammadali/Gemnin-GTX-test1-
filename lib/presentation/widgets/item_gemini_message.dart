@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tts/flutter_tts.dart';  // Подключаем flutter_tts для TTS
+import 'package:flutter_tts/flutter_tts.dart';
 import '../../data/models/message_model.dart';
 
-final FlutterTts flutterTts = FlutterTts();  // Инициализируем экземпляр TTS
+final FlutterTts flutterTts = FlutterTts();
 
 Widget itemOfGeminiMessage(MessageModel message) {
   return Container(
@@ -21,7 +21,7 @@ Widget itemOfGeminiMessage(MessageModel message) {
             ),
             IconButton(
               onPressed: () {
-                _speak(message.message ?? "No message to speak");// Вызов функции озвучивания
+                _speak(message.message ?? "No message to speak");
               },
               icon: const Icon(
                 Icons.volume_up,
@@ -33,7 +33,7 @@ Widget itemOfGeminiMessage(MessageModel message) {
         Container(
           margin: const EdgeInsets.only(top: 15),
           child: Text(
-            message.message ?? "No message available", // Обработка null
+            message.message ?? "No message available",
             style: const TextStyle(
                 color: Color.fromRGBO(173, 173, 176, 1), fontSize: 16),
           ),
@@ -43,13 +43,13 @@ Widget itemOfGeminiMessage(MessageModel message) {
   );
 }
 
-// Асинхронная функция для озвучивания текста
+
 Future<void> _speak(String text) async {
   try {
-    await flutterTts.setLanguage("en-US"); // Установка языка
-    await flutterTts.setSpeechRate(0.65);  // Установка скорости речи
-    await flutterTts.speak(text);// Воспроизведение текста
+    await flutterTts.setLanguage("en-US");
+    await flutterTts.setSpeechRate(0.5);
+    await flutterTts.speak(text);
   } catch (e) {
-    print("Error during TTS: $e");  // Логирование ошибок
+    print("Error during TTS: $e");
   }
 }

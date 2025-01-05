@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:test2/data/models/message_model.dart';
 
 
 import '../controllers/home_controller.dart';
@@ -60,10 +59,10 @@ class _HomePageState extends State<HomePage> {
                             },
                           )
                               : Center(
-                                    child: SizedBox(
-                                  height: 80,
-                                     width: 80,
-                                          child: Image.asset('assets/images/gemini_icon.png'),
+                            child: SizedBox(
+                              height: 80,
+                              width: 80,
+                              child: Image.asset('assets/images/gemini_icon.png'),
                             ),
                           ),
                         ),
@@ -80,7 +79,23 @@ class _HomePageState extends State<HomePage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [_controller.pickedImage64.isNotEmpty ? Stack(
                       children: [
-                          Container(
+                        Container(
+                          margin: EdgeInsets.all(10),
+                          width: 70,
+                          height: 70,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color: Colors.white),
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: Image.memory(
+                              base64Decode(_controller.pickedImage64),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                        Container(
                             margin: EdgeInsets.all(10),
                             width: 70,
                             height: 70,
@@ -88,36 +103,20 @@ class _HomePageState extends State<HomePage> {
                               borderRadius: BorderRadius.circular(10),
                               border: Border.all(color: Colors.white),
                             ),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(10),
-                              child: Image.memory(
-                                base64Decode(_controller.pickedImage64),
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-                          Container(
-                              margin: EdgeInsets.all(10),
-                              width: 70,
-                              height: 70,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                border: Border.all(color: Colors.white),
-                              ),
-                              child: Center(
-                                child: IconButton(
-                                  onPressed: () {
-                                    _controller.removePickedImage();
-                                  },
-                                  icon: Icon(
-                                    Icons.clear,
-                                    color: Colors.black,
-                                  ),
+                            child: Center(
+                              child: IconButton(
+                                onPressed: () {
+                                  _controller.removePickedImage();
+                                },
+                                icon: Icon(
+                                  Icons.clear,
+                                  color: Colors.black,
                                 ),
-                              )),
-                        ],
-                      )
-                          : SizedBox.shrink(),
+                              ),
+                            )),
+                      ],
+                    )
+                        : SizedBox.shrink(),
                       Row(
                         children: [
                           Expanded(

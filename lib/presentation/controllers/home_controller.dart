@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-
 import '../../core/services/log_services.dart';
 import '../../core/services/utils_service.dart';
 import '../../data/models/message_model.dart';
@@ -25,11 +24,11 @@ class HomeController extends GetxController {
       return;
     }
 
-    if(pickedImage64.isNotEmpty){
+    if (pickedImage64.isNotEmpty) {
       MessageModel mine = MessageModel(isMine: true, message: message, base64: pickedImage64);
       updateMessage(mine);
       apiTextAndImage(message, pickedImage64);
-    }else{
+    } else {
       MessageModel mine = MessageModel(isMine: true, message: message);
       updateMessage(mine);
       apiTextOnly(message);
@@ -62,7 +61,7 @@ class HomeController extends GetxController {
     });
   }
 
-  apiTextAndImage(String text, String base64Image)async{
+  apiTextAndImage(String text, String base64Image) async {
     isLoading = true;
     update();
 
@@ -78,19 +77,32 @@ class HomeController extends GetxController {
     });
   }
 
-  pickImageFromGallery() async{
+  pickImageFromGallery() async {
     var result = await Utils.pickAndConvertImage();
     LogService.i(result);
     pickedImage64 = result;
     update();
   }
 
-  removePickedImage(){
+  removePickedImage() {
     pickedImage64 = "";
     update();
   }
 
   void scrollToLast() {
-    scrollController.animateTo(scrollController.position.maxScrollExtent, duration: Duration(seconds: 1), curve: Curves.easeInOut,);
+    if (scrollController.hasClients) {
+      scrollController.animateTo(
+        scrollController.position.maxScrollExtent,
+        duration: const Duration(seconds: 1),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
+
+  @override
+  void onClose() {
+    scrollController.dispose();
+    textController.dispose();
+    super.onClose();
   }
 }

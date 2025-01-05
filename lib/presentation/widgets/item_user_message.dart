@@ -35,9 +35,9 @@ Widget itemOfUserMessage(MessageModel message) {
               (message.base64 != null && message.base64!.isNotEmpty)
                   ? Container(margin: EdgeInsets.only(top: 16, bottom: 6),
 
-                       child: ClipRRect(
-                         borderRadius: BorderRadius.circular(10),
-                             child: Image.memory(base64Decode(message.base64!)),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Image.memory(base64Decode(message.base64!)),
                 ),
               )
                   : SizedBox.shrink(),
