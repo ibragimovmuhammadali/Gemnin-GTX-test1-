@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
+import 'package:speech_to_text/speech_to_text.dart' as stt;
 
 
 import '../controllers/home_controller.dart';
@@ -17,10 +19,58 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   var _controller = Get.find<HomeController>();
+  stt.SpeechToText _speech = stt.SpeechToText();
+  bool _isListening = false;
+  String _text = "";
 
   @override
   void initState() {
     super.initState();
+    _initSpeech();
+  }
+
+  // Инициализация для SpeechToText
+  void _initSpeech() async {
+    bool available = await _speech.initialize(
+      onStatus: (status) => print('Speech status: $status'),
+      onError: (error) => print('Speech error: $error'),
+    );
+    if (!available) {
+      print("Speech recognition is not available.");
+    }
+  }
+
+  // Функция для начала записи
+  void _startListening() async {
+    if (!_isListening) {
+      bool available = await _speech.listen(
+        onResult: (result) {
+          setState(() {
+            _text = result.recognizedWords;
+            _controller.textController.text = _text; // Устанавливаем распознанный текст в TextField
+          });
+        },
+      );
+      if (available) {
+        setState(() {
+          _isListening = true;
+        });
+      }
+    }
+  }
+
+  // Функция для остановки записи
+  void _stopListening() {
+    _speech.stop();
+    setState(() {
+      _isListening = false;
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _speech.stop();
   }
 
   @override
@@ -57,16 +107,13 @@ class _HomePageState extends State<HomePage> {
                                 return itemOfGeminiMessage(message);
                               }
                             },
-                          )
-                              : Center(
-                            child: SizedBox(
-                              height: 80,
-                              width: 80,
-                              child: Image.asset('assets/images/gemini_icon.png'),
-                            ),
-                          ),
+                          ) : Center(child: SizedBox(height: 80, width: 80, child: Image.asset('assets/images/gemini_icon.png'),),),
                         ),
-                        _controller.isLoading ? Center(child: CircularProgressIndicator(),) : SizedBox.shrink(),
+                        _controller.isLoading ? Center(child: Container(
+                          width: 40,
+                          height: 40,
+                          child: Lottie.asset("assets/lotties/lottie.json"),
+                        ),) : SizedBox.shrink(),
                       ],)),
                 Container(
                   margin: const EdgeInsets.only(right: 20, left: 20),
@@ -77,25 +124,26 @@ class _HomePageState extends State<HomePage> {
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [_controller.pickedImage64.isNotEmpty ? Stack(
-                      children: [
-                        Container(
-                          margin: EdgeInsets.all(10),
-                          width: 70,
-                          height: 70,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(color: Colors.white),
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: Image.memory(
-                              base64Decode(_controller.pickedImage64),
-                              fit: BoxFit.cover,
+                    children: [
+                      _controller.pickedImage64.isNotEmpty ? Stack(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.all(10),
+                            width: 70,
+                            height: 70,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(color: Colors.white),
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: Image.memory(
+                                base64Decode(_controller.pickedImage64),
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
-                        ),
-                        Container(
+                          Container(
                             margin: EdgeInsets.all(10),
                             width: 70,
                             height: 70,
@@ -113,10 +161,10 @@ class _HomePageState extends State<HomePage> {
                                   color: Colors.black,
                                 ),
                               ),
-                            )),
-                      ],
-                    )
-                        : SizedBox.shrink(),
+                            ),
+                          ),
+                        ],
+                      ) : SizedBox.shrink(),
                       Row(
                         children: [
                           Expanded(
@@ -146,6 +194,13 @@ class _HomePageState extends State<HomePage> {
                             },
                             icon: Icon(
                               Icons.send,
+                              color: Colors.grey,
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: _isListening ? _stopListening : _startListening,
+                            icon: Icon(
+                              _isListening ? Icons.stop : Icons.mic,
                               color: Colors.grey,
                             ),
                           ),

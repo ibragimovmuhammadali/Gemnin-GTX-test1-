@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.myapp">
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
 
     <!-- Создаём блок <queries>, если его нет -->
     <queries>

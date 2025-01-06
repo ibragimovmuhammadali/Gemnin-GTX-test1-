@@ -33,7 +33,7 @@ class StarterController extends GetxController {
 
   Future<void> _startPlaybackWithSync() async {
 
-    await _speak("Welcome to the gemini");
+    await _speak("Welcome to the Gemini, a place where innovation meets simplicity. Explore, create, and enjoy a seamless experience crafted just for you!");
 
 
 
@@ -42,7 +42,7 @@ class StarterController extends GetxController {
 
         await videoPlayerController.seekTo(Duration.zero);
         videoPlayerController.play();
-        await _speak("Welcome to the gemini");
+        await _speak("Welcome to the Gemini, a place where innovation meets simplicity. Explore, create, and enjoy a seamless experience crafted just for you!");
       }
     });
   }

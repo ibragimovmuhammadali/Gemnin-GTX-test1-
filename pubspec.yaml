@@ -25,10 +25,12 @@ dependencies:
   # Images
   image_picker: ^1.0.8
   video_player: ^2.8.5
-
+  lottie: ^2.7.0
+  simple_animations: ^5.0.2
   #Text To Speech
   flutter_tts: ^3.6.3
-  
+  speech_to_text: 7.0.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -43,6 +45,7 @@ flutter:
   assets:
    - assets/images/
    - assets/videos/
+   - assets/lotties/
   # fonts:
   #   - family: Schyler
   #     fonts:
